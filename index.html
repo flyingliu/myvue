@@ -1,14 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>hello</title>
+  <style>
+    .mdiv {
+      position: relative;
+      /* display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0; */
+    }
+
+    .mbg {
+      background: rgba(0, 0, 0, .5);
+      /* width: 100vw;
+      height: 100vh;
+      position: absolute;
+      z-index: 0; */
+    }
+
+    .mbody {
+      position: relative;
+      background: #fff;
+      z-index: 9;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>hello word</h1>
+  <div id="app">
+
+    <message :show.sync="show">
+      测试道访，跨党派个人和实体
+    </message>
+
+    <message :show.sync="showWarn">
+      <template v-slot:title>
+        <b>
+          警告
+        </b>
+      </template>
+      <template>
+        测试道访，跨党派个人和实体
+      </template>
+    </message>
+
+
+    <h1>{{title}}</h1>
+
+    <button @click="closeMsg">关闭消息</button>
+
+    <course-add v-model="course" @add-course='addCourse'></course-add>
+    <!-- <course-add :value="course" @input="course = $event" @add-course='addCourse'></course-add> -->
+    <div class="list">
+      <ul>
+        <li v-for="(item,index) in keys" :key="index">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script src="vue.js"></script>
   <script src="hello.js"></script>
 </body>
 
