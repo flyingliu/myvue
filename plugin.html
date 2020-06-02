@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hello</title>
+  <script src="//at.alicdn.com/t/font_404355_lxwe2o9g2ch.js"></script>
+  <style>
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15em;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 300px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app">
+    <h2 :title="msg" icon="cookie">{{msg}}</h2>
+    <heading :title="msg" icon="cookie" :myclick="say">{{msg}}</heading>
+    <heading :title="msg" :level="1" icon="imagevector"></heading>
+
+    icon-
+    <input v-focus />
+  </div>
+  <script src="vue.js"></script>
+  <script src="./plugins/heading.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        msg: 'hello world, Yuqi...'
+      },
+      methods: {
+        say() {
+          console.log("this is say 1")
+        }
+      },
+    })
+  </script>
+
+</body>
+
+</html>

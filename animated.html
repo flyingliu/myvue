@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>hello</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
   <style>
     .mdiv {
       position: relative;
@@ -113,7 +114,10 @@
     Vue.component('message', {
       props: ['show'],
       template: `
-  <transition name="fade">
+  <transition
+    enter-active-class="animate__animated animate__bounceIn"
+    leave-active-class="animate__animated animate__bounceOut"
+    >
     <div v-if="show" class="mdiv">
       <div class="mbody">
         <slot name="title" title="来自孩子标题"></slot>
@@ -150,9 +154,13 @@
           this.$bus.$emit('message-close')
         },
         addCourse() {
-          this.keys.push(this.course)
-          this.show = true
-          this.course = ''
+          if (this.course) {
+            this.keys.push(this.course)
+            this.show = true
+            this.course = ''
+          } else {
+            this.showWarn = true
+          }
         }
       },
       async created() {

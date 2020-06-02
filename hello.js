@@ -29,9 +29,12 @@ Vue.component('course-add',{
   },
 })
 
+
+
 Vue.component('message',{
   props: ['show'],
   template: `
+  <transition name="fade">
     <div v-if="show" class="mdiv">
       <div class="mbody">
         <slot name="title" title="来自孩子标题"></slot>
@@ -39,6 +42,8 @@ Vue.component('message',{
         <a @click="$emit('update:show', false)" >X</a>
       </div>
     </div>
+  </transition>
+
   `,
   mounted() {
     this.$bus.$on('message-close',() => {
@@ -57,8 +62,8 @@ const app = new Vue({
       keys: [],
       course: '',
       message: 'this is a food',
-      show: true,
-      showWarn: true
+      show: false,
+      showWarn: false
     }
   },
   methods: {
@@ -67,6 +72,7 @@ const app = new Vue({
     },
     addCourse() {
       this.keys.push(this.course)
+      this.show = true
       this.course = ''
     }
   },

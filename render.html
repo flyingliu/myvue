@@ -5,13 +5,137 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>hello</title>
+  <script src="//at.alicdn.com/t/font_404355_lxwe2o9g2ch.js"></script>
+  <style>
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15em;
+      fill: currentColor;
+      overflow: hidden;
+    }
+  </style>
 </head>
 
 <body>
   <div id="app">
+    <h2 :title="msg" icon="cookie">{{msg}}</h2>
+    <heading :title="msg" icon="cookie" :myclick="say">{{msg}}</heading>
+    ---
+  </div>
+  <div id="div1">
+    <child-msg :level="1"></child-msg>
   </div>
   <script src="vue.js"></script>
-  <script src="render.js"></script>
+  <script>
+    Vue.component('heading', {
+      props: {
+        level: {
+          type: Number,
+          default: 2
+        },
+        title: {
+          type: String,
+          default: ''
+        },
+        icon: {
+          type: String
+        },
+        myclick: {
+          type: Function
+        }
+      },
+      //       <svg class="icon" aria-hidden="true">
+      //   <use xlink:href="#icon-xxx"></use>
+      // </svg>
+      render: function (h) {
+        let children = []
+        if (this.icon) {
+          children.push(h(
+            'svg', {
+              'class': 'icon'
+            },
+            [
+              h(
+                'use', {
+                  'attrs': {
+                    'xlink:href': '#icon-' + this.icon
+                  }
+                }
+              )
+            ]
+          ))
+        }
+
+
+        children = children.concat(this.$slots.default)
+        const vnode = h(
+          'h' + this.level, // 标签名称
+          {
+            on: {
+              myclick: this.myclick
+            },
+            class: {
+              foo: true,
+                bar: false,
+            },
+            style: {
+              color: 'red',
+              fontSize: '14px'
+            },
+            attrs: {
+              title: this.title
+            }
+          },
+          // 由子节点构成的数组
+          children
+        )
+        return vnode
+      }
+    })
+
+
+    const app = new Vue({
+      el: '#app',
+      data: {
+        msg: 'hello world, Yuqi'
+      },
+      methods: {
+        say() {
+          console.log("this is say")
+        }
+      },
+    })
+
+    Vue.component('child-msg', {
+      render: function (createElement) {
+        var self = this;
+        return createElement('div', [
+          createElement('input', {
+            'on': {
+              input: function (event) {
+                self.value = event.target.value;
+              }
+            }
+          }), createElement('p', self.value)
+        ])
+      },
+      props: {
+        level: {
+          type: Number,
+          required: true
+        }
+      },
+      data: function () {
+        return {
+          value: ''
+        }
+      }
+    })
+    new Vue({
+      el: "#div1"
+    })
+  </script>
 </body>
 
 </html>

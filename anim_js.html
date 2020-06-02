@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>hello</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
   <style>
     .mdiv {
       position: relative;
@@ -32,15 +33,15 @@
       z-index: 9;
     }
 
-    .fade-enter,
+    /* .fade-enter,
     .fade-leave-to {
       opacity: 0;
-    }
+    } */
 
-    .fade-enter-active,
+    /* .fade-enter-active,
     .fade-leave-active {
       transition: opacity 1.5s;
-    }
+    } */
   </style>
 </head>
 
@@ -78,6 +79,7 @@
     </div>
   </div>
   <script src="vue.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.min.js"></script>
   <script>
     function getKey() {
       return new Promise(res => {
@@ -113,7 +115,10 @@
     Vue.component('message', {
       props: ['show'],
       template: `
-  <transition name="fade">
+  <transition name="fade"
+    @before_enter="handleVeforeEnter"
+    @enter="handleEnter"
+    >
     <div v-if="show" class="mdiv">
       <div class="mbody">
         <slot name="title" title="来自孩子标题"></slot>
@@ -124,6 +129,26 @@
   </transition>
 
   `,
+      methods: {
+        handleVeforeEnter: (el) => {
+          el.style.opacity = 0
+        },
+        handleEnter: (el, done) => {
+          Velocity(el, {
+            opacity: 1
+          }, {
+            duration: 1000,
+            complete: done
+          })
+        },
+        beforeLeave(el) {
+          el.style.opacity = 1
+        },
+        leave(el, done) {
+          document.body.offsetHeight
+          el.style.opacity = 0
+        }
+      },
       mounted() {
         this.$bus.$on('message-close', () => {
           this.$emit('update:show', false)
@@ -150,9 +175,13 @@
           this.$bus.$emit('message-close')
         },
         addCourse() {
-          this.keys.push(this.course)
-          this.show = true
-          this.course = ''
+          if (this.course) {
+            this.keys.push(this.course)
+            this.show = true
+            this.course = ''
+          } else {
+            this.showWarn = true
+          }
         }
       },
       async created() {
