@@ -22,10 +22,7 @@ export default {
     name () {
       return this.data
     }
-  },
-  components: {
-    New,
-  },
+  }
 }
 </script>
 
