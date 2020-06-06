@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ key }}
     <div v-for="item in items" :key="item.id">
       {{ item }}
     </div>
@@ -7,10 +8,16 @@
 </template>
 
 <script>
+console.log('vue')
 export default {
   data () {
     return {
-      key: value
+      items: [],
+      key: 'msg this is a cool',
+      my: this.my,
+      fn: () => {
+        console.log('fn:', this.key)
+      }
     }
   },
   methods: {
@@ -18,11 +25,10 @@ export default {
 
     }
   },
-  computed: {
-    name () {
-      return this.data
-    }
-  }
+
+  mounted () {
+    this.fn()
+  },
 }
 </script>
 
